@@ -20,4 +20,5 @@ class Body:
         self.yPos += self.yVel * t + 0.5 * yAcc * t**2
         self.xVel += xAcc * t
         self.yVel += yAcc * t
-        self.xAcc, self.yAcc = newAcc
+        if newAcc != None:
+            self.xAcc, self.yAcc = newAcc

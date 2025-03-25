@@ -1,7 +1,8 @@
 from body import Body
 from math import atan2, sin, cos
 
-G = 6.6743015 * 10**(-11)
+# G = 6.6743015 * 10**(-11)
+G = 1
 
 def dist2(b1, b2):
     return (b1.xPos - b2.xPos)**2 + (b1.yPos - b2.yPos)**2
@@ -12,6 +13,10 @@ def calculateAcceleration(b1, b2):
     return (a * cos(theta), a * sin(theta))
 
 def tupleSum(t1, t2):
+    if t1 == None:
+        t1 = (0, 0)
+    if t2 == None:
+        t2 = (0, 0)
     return (t1[0] + t2[0], t1[1] + t2[1])
 
 class Simulation:
@@ -29,10 +34,13 @@ class Simulation:
         self.n += 1
 
     def iterate(self, t = 1):
-        accelerations = [(0, 0) for i in range(self.n)]
+        accelerations = [None for i in range(self.n)]
         for i in range(self.n):
             for j in range(self.n):
                 if i != j:
                     accelerations[i] = tupleSum(accelerations[i], calculateAcceleration(self.bodies[i], self.bodies[j]))
         for b in self.bodies:
             b.iterate(t, accelerations[i])
+    
+    def positions(self):
+        return [(b.xPos, b.yPos) for b in self.bodies]
