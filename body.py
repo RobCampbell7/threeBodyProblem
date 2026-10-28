@@ -11,7 +11,7 @@ class Body:
     def iterate(self, t=1, newAcc=None):
         if newAcc != None:
             xAcc = (self.xAcc + newAcc[0]) / 2
-            yAcc = (self.yAcc + newAcc[0]) / 2
+            yAcc = (self.yAcc + newAcc[1]) / 2
         else:
             xAcc = self.xAcc
             yAcc = self.yAcc
