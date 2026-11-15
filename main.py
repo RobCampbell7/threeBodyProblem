@@ -10,8 +10,10 @@ def dist(p1, p2):
 
 mpl.rcParams['animation.ffmpeg_path'] = r'C:\\Users\\rhc209\\OneDrive - University of Exeter\\python\\ffmpeg-master-latest-win64-gpl\\bin\\ffmpeg.exe'
 k = -1
+# called once per animation frame, one simulation step then redraw the points
 def update(frame):
     # global minDist
+    # frame 0 just draws the starting positions
     if frame > 0:
         sim.iterate(t=1)
 
@@ -25,8 +27,10 @@ def update(frame):
     for i in range(sim.n):
         points[i].set_data(*pos[i])
 
+    # blitting needs the changed artists back
     return *points,
 
+# three equal masses, each given a small starting velocity so they don't just fall together
 sim = Simulation()
 sim.addBody(1, (0, 0.5), (0.001, 0.001))
 sim.addBody(1, (0.5, 0.3), (-0.001, -0.0005))
@@ -42,9 +46,11 @@ ax.set_ylim(-1, 1)
 points = []
 arrows = []
 colours = ["r", "g", "b", "k"]
+# one plot line per body, each holding a single dot that gets moved each frame
 for i in range(sim.n):
     # newPlot, = fig.plot(*p, "rx")
     points.append(ax.plot(sim.bodies[i].xPos, sim.bodies[i].yPos, colours[i] + ".")[0])
 
+# interval 0 so it runs as fast as matplotlib can draw
 ani = FuncAnimation(fig, update, frames=100000, interval=0, blit=True, repeat=False)#, init_func=init)
 plt.show()

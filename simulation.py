@@ -1,18 +1,23 @@
 from body import Body
 from math import atan2, sin, cos
 
+# gravitational constant in si units
 G = 6.6743015 * 10**(-11)
 # G = 1
 
+# squared distance, saves a sqrt since the force law only needs r^2
 def dist2(b1, b2):
     return (b1.xPos - b2.xPos)**2 + (b1.yPos - b2.yPos)**2
 
+# acceleration on b1 due to b2, newton's law a = G m / r^2
+# split into x and y using the angle between the two bodies
 def calculateAcceleration(b1, b2):
     r2 = min(1e-5, dist2(b1, b2))
     a = G * b2.mass / r2
     theta = atan2(b2.yPos - b1.yPos, b2.xPos - b1.xPos)
     return (a * cos(theta), a * sin(theta))
 
+# adds two (x, y) tuples, treating None as zero so the running total can start empty
 def tupleSum(t1, t2):
     if t1 == None:
         t1 = (0, 0)
@@ -35,6 +40,8 @@ class Simulation:
         self.n += 1
 
     def iterate(self, t = 1):
+        # work out every body's total acceleration from the current positions first,
+        # then move them all, so no body sees a mix of old and new positions
         accelerations = [None for i in range(self.n)]
         for i in range(self.n):
             for j in range(self.n):

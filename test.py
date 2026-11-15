@@ -2,6 +2,7 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 from simulation import Simulation, calculateAcceleration
 
+# two bodies at rest, run a few steps and plot where they started (blue) and ended (red)
 sim = Simulation()
 sim.addBody(1, (-1, 0))
 sim.addBody(1, (1, 0))
